@@ -125,7 +125,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build Docker Image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/sample-app:latest .
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/typescript-app:test .
 ```
 
 5. **Add the Push Job**
@@ -140,11 +140,12 @@ jobs:
       - name: Login to DockerHub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
       - name: Push Docker Image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/sample-app:latest
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/typescript-app:test
 ```
 
 6. **Create the `main` Workflow File**
-   - Duplicate the steps above, but modify the `on:` section to trigger on `main` branch pushes:
+   - Duplicate the steps above, but modify the `on:` section to trigger on `main` branch pushes
+   - Additionally, make sure that the tag of our image is `latest` for the `main` branch workflow.
 
 ```yaml
 on:
