@@ -1,7 +1,12 @@
-// src/index.ts
-export const greet = (name: string): string => `Hello, ${name}!`;
+import express, { Request, Response } from 'express';
 
-if (require.main === module) {
-  const name = process.argv[2] || "World";
-  console.log(greet(name));
-}
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.get('/', (req: Request, res: Response) => {
+  res.send('Hello, CI/CD API!');
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
+});
