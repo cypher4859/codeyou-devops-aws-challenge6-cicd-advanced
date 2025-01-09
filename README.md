@@ -28,12 +28,18 @@ Sample TypeScript Application:
 
 ```typescript
 // src/index.ts
-export const greet = (name: string): string => `Hello, ${name}!`;
+import express, { Request, Response } from 'express';
 
-if (require.main === module) {
-  const name = process.argv[2] || "World";
-  console.log(greet(name));
-}
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.get('/', (req: Request, res: Response) => {
+  res.send('Hello, CI/CD API!');
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
+});
 ```
 
 Add the following scripts to `package.json`:
@@ -42,10 +48,42 @@ Add the following scripts to `package.json`:
 {
   "scripts": {
     "build": "tsc",
+    "start": "node dist/index.js",
     "lint": "eslint .",
-    "test": "jest"
+    "test": "jest",
+    "dev": "nodemon src/index.ts"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.0",
+    "ts-node": "^10.9.0",
+    "nodemon": "^2.0.22",
+    "eslint": "^8.0.0",
+    "jest": "^29.0.0",
+    "@types/jest": "^29.0.0",
+    "lodash": "^4.17.15",
+    "ts-jest": "^29.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@types/express": "^4.17.17"
   }
 }
+```
+
+Add the following to tsconfig.json
+```json
+{
+    "compilerOptions": {
+      "target": "ES6",
+      "module": "CommonJS",
+      "outDir": "./dist",
+      "rootDir": "./src",
+      "strict": true,
+      "esModuleInterop": true
+    }
+  }
 ```
 
 #### 3. Set Up GitHub Actions Workflow
